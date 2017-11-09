@@ -1,4 +1,4 @@
-package com.example.kevinlay.riffraffler;
+package com.example.kevinlay.riffraffler.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.kevinlay.riffraffler.R;
 
 // In this case, the fragment displays simple text based on the page
 public class PageFragment extends Fragment {
@@ -20,9 +22,7 @@ public class PageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_page, container, false);
-//        TextView textView = (TextView) view;
-//        textView.setText("Fragment #" + ++mPage);
+        View view = inflater.inflate(R.layout.fragment_page, container, false);
         return view;
     }
 }

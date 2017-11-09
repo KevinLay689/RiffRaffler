@@ -1,4 +1,4 @@
-package com.example.kevinlay.riffraffler;
+package com.example.kevinlay.riffraffler.Fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
+import com.example.kevinlay.riffraffler.MyRafflesModel;
+import com.example.kevinlay.riffraffler.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +32,13 @@ public class MyRafflesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prepareTestData();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_raffles_layout, container, false);
-        prepareTestData();
         recyclerView = view.findViewById(R.id.myRafflesRecycler);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +51,6 @@ public class MyRafflesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         return view;
     }
 
@@ -55,7 +58,7 @@ public class MyRafflesFragment extends Fragment {
         Toast.makeText(getActivity(), "Clicked Button", Toast.LENGTH_SHORT).show();
         MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle ", 0);
         raffles.add(myRafflesModel1);
-        recyclerView.refreshDrawableState();
+        adapter.notifyDataSetChanged();
     }
 
     private void prepareTestData() {
