@@ -5,18 +5,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kevinlay on 11/8/17.
  */
 
 public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 3;
+    private final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[] { "My Raffles", "Completed", "Messages" };
+    private final List<Fragment> fragments = new ArrayList<>();
     private Context context;
 
     public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
+    }
+
+    public void addFragment(Fragment fragment) {
+        fragments.add(fragment);
     }
 
     @Override
@@ -26,7 +34,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PageFragment.newInstance(position + 1);
+        return fragments.get(position);
     }
 
     @Override
