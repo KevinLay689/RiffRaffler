@@ -1,4 +1,4 @@
-package com.example.kevinlay.riffraffler.Fragments;
+package com.example.kevinlay.riffraffler.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,22 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
-import com.example.kevinlay.riffraffler.MyRafflesModel;
+import com.example.kevinlay.riffraffler.model.MessagesModel;
 import com.example.kevinlay.riffraffler.R;
+import com.example.kevinlay.riffraffler.adapter.MessagesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kevinlay on 11/8/17.
- */
+// In this case, the fragment displays simple text based on the page
+public class MessagePageFragment extends Fragment {
 
-public class MyRafflesFragment extends Fragment {
-
-    private List<MyRafflesModel> raffles = new ArrayList<>();
+    private List<MessagesModel> messages = new ArrayList<>();
     private RecyclerView recyclerView;
-    private MyRafflesAdapter adapter;
+    private MessagesAdapter adapter;
+
     private FloatingActionButton floatingActionButton;
 
     @Override
@@ -38,16 +36,16 @@ public class MyRafflesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_raffles_layout, container, false);
-        recyclerView = view.findViewById(R.id.myRafflesRecycler);
-        floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        View view = inflater.inflate(R.layout.fragment_message_page, container, false);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton2);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleAdd();
             }
         });
-        adapter = new MyRafflesAdapter(raffles);
+        recyclerView = view.findViewById(R.id.messagesRecycler);
+        adapter = new MessagesAdapter(messages);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
@@ -56,16 +54,15 @@ public class MyRafflesFragment extends Fragment {
 
     private void handleAdd() {
         Toast.makeText(getActivity(), "Clicked Button", Toast.LENGTH_SHORT).show();
-        MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle ", 0);
-        raffles.add(myRafflesModel1);
+        MessagesModel messagesModel = new MessagesModel("Kevins Message ", 0);
+        messages.add(messagesModel);
         adapter.notifyDataSetChanged();
     }
 
     private void prepareTestData() {
         for(int i = 0; i < 3; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, 0);
-            raffles.add(myRafflesModel1);
+            MessagesModel messagesModel = new MessagesModel("Kevins Message "+ i, 0);
+            messages.add(messagesModel);
         }
     }
-
 }

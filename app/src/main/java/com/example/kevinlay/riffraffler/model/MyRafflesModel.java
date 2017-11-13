@@ -1,4 +1,4 @@
-package com.example.kevinlay.riffraffler;
+package com.example.kevinlay.riffraffler.model;
 
 /**
  * Created by kevinlay on 11/8/17.

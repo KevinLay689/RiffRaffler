@@ -12,13 +12,13 @@ import java.util.List;
  * Created by kevinlay on 11/8/17.
  */
 
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class RaffleFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
     private final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[] { "My Raffles", "Completed", "Messages" };
     private final List<Fragment> fragments = new ArrayList<>();
     private Context context;
 
-    public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public RaffleFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }

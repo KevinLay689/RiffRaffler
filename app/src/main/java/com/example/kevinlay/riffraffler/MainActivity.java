@@ -5,10 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.kevinlay.riffraffler.Fragments.CompletedRafflesFragment;
-import com.example.kevinlay.riffraffler.Fragments.MyRafflesFragment;
-import com.example.kevinlay.riffraffler.Fragments.PageFragment;
-import com.example.kevinlay.riffraffler.adapter.SampleFragmentPagerAdapter;
+import com.example.kevinlay.riffraffler.fragments.CompletedRafflesFragment;
+import com.example.kevinlay.riffraffler.fragments.MyRafflesFragment;
+import com.example.kevinlay.riffraffler.fragments.MessagePageFragment;
+import com.example.kevinlay.riffraffler.adapter.RaffleFragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,10 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        SampleFragmentPagerAdapter adapter = new SampleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
+        RaffleFragmentPagerAdapter adapter = new RaffleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
         adapter.addFragment(new MyRafflesFragment());
         adapter.addFragment(new CompletedRafflesFragment());
-        adapter.addFragment(new PageFragment());
+        adapter.addFragment(new MessagePageFragment());
         viewPager.setAdapter(adapter);
 
         // Give the TabLayout the ViewPager
