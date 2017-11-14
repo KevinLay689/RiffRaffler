@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
 import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
+import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,11 +26,11 @@ import java.util.List;
 
 public class CompletedRafflesFragment extends Fragment {
 
-    private List<MyRafflesModel> raffles = new ArrayList<>();
+    private List<RaffleTicketModel> raffles = new ArrayList<>();
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
 
-    private List<MyRafflesModel> raffles2 = new ArrayList<>();
+    private List<RaffleTicketModel> raffles2 = new ArrayList<>();
     private RecyclerView recyclerView2;
     private MyRafflesAdapter adapter2;
 
@@ -66,19 +67,19 @@ public class CompletedRafflesFragment extends Fragment {
 
     private void prepareTestData() {
         for(int i = 0; i < 20; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, "www.google.com", "");
+            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
             raffles.add(myRafflesModel1);
         }
         for(int i = 0; i < 20; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, "www.google.com", "");
+            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
             raffles2.add(myRafflesModel1);
         }
         if(raffles.size() <= 0 ) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("no raffle ", "www.google.com", "");
+            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("no raffle ", "www.google.com", new ArrayList<String>());
             raffles.add(myRafflesModel1);
         }
         if(raffles2.size() < 0 ) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("no raffle ", "www.google.com", "");
+            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("no raffle ", "www.google.com", new ArrayList<String>());
             raffles2.add(myRafflesModel1);
         }
 

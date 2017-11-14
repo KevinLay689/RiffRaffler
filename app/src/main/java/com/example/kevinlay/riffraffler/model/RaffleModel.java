@@ -10,6 +10,10 @@ public class RaffleModel {
     boolean isActive;
     public String raffleID;
 
+    public RaffleModel() {
+        
+    }
+
     public RaffleModel(String raffleID) {
         isWinner = false;
         isActive = true;

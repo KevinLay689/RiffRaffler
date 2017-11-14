@@ -18,6 +18,8 @@ import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
 import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
 import com.example.kevinlay.riffraffler.model.RaffleModel;
+import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
+import com.example.kevinlay.riffraffler.model.User;
 import com.example.kevinlay.riffraffler.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +39,7 @@ public class MyRafflesFragment extends Fragment {
 
     private static final String TAG = "MyRafflesFragment";
 
-    private List<MyRafflesModel> raffles = new ArrayList<>();
+    private List<RaffleTicketModel> raffles = new ArrayList<>();
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
     private FloatingActionButton floatingActionButton;
@@ -92,9 +94,19 @@ public class MyRafflesFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                RaffleModel raffleModel = dataSnapshot.getValue(RaffleModel.class);
-                Log.i(TAG, "onDataChange: datasnapshotChildren" + dataSnapshot.getChildren());
-                Log.i(TAG, "onDataChange: RaffleModelID " + raffleModel.raffleID);
+
+                raffles.clear();
+
+                for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    //Log.i(TAG, "onDataChange: User ID " + user.getUserId());
+                }
+                for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
+                    RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
+                    //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
+                    raffles.add(raffle);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -105,16 +117,25 @@ public class MyRafflesFragment extends Fragment {
     }
 
     private void insertDataToDatbase() {
-        MyRafflesModel myRafflesModel = new MyRafflesModel("name", "test", "0" );
-        databaseReference.child(mAuth.getUid()).child("myRaffles").push().setValue(myRafflesModel);
-        raffles.add(myRafflesModel);
+        String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999)); ;
+        List<String> emptyList = new ArrayList<>();
+
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList);
+
+        databaseReference.child("raffles").push().setValue(raffleTicketModel);
     }
 
+//    private void insertDataToDatbase2() {
+//        MyRafflesModel myRafflesModel = new MyRafflesModel("name", "test", "0" );
+//        databaseReference.child(mAuth.getUid()).child("myRaffles").push().setValue(myRafflesModel);
+//        raffles.add(myRafflesModel);
+//    }
+
     private void prepareTestData() {
-        for(int i = 0; i < 3; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, "www.google.com", "");
-            raffles.add(myRafflesModel1);
-        }
+//        for(int i = 0; i < 3; i++) {
+//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
+//            raffles.add(myRafflesModel1);
+//        }
     }
 
 }

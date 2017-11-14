@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
+import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class MyRafflesAdapter extends RecyclerView.Adapter<MyRafflesAdapter.RaffleViewHolder> {
 
-    private List<MyRafflesModel> raffles;
+    private List<RaffleTicketModel> raffles;
 
-    public MyRafflesAdapter(List<MyRafflesModel> myRafflesModels) {
+    public MyRafflesAdapter(List<RaffleTicketModel> myRafflesModels) {
         raffles = myRafflesModels;
     }
 
@@ -34,7 +35,7 @@ public class MyRafflesAdapter extends RecyclerView.Adapter<MyRafflesAdapter.Raff
 
     @Override
     public void onBindViewHolder(RaffleViewHolder holder, int position) {
-        holder.textView.setText(raffles.get(position).getRaffleName());
+        holder.textView.setText(raffles.get(position).getRaffleId());
         //holder.imageView.setImageResource(raffles.get(position).getImage());
     }
 

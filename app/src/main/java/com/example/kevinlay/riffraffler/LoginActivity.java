@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
+import com.example.kevinlay.riffraffler.model.User;
 import com.example.kevinlay.riffraffler.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -116,6 +118,20 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private void insertUserIntoDatabase(String id){
+        List<String> emptyList = new ArrayList<>();
+        List<RaffleTicketModel> emptyRaffleTicketsOwned = new ArrayList<>();
+        emptyList.add("0");
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel("0", "0", emptyList);
+        emptyRaffleTicketsOwned.add(raffleTicketModel);
+
+        List<RaffleTicketModel> emptyRaffleTickets = new ArrayList<>();
+        emptyRaffleTickets.add(raffleTicketModel);
+
+        User user = new User(id, emptyRaffleTicketsOwned, emptyRaffleTickets);
+        databaseReference.child("user").push().setValue(user);
+    }
+
+    private void insertUserIntoDatabase2(String id){
         List<String> emptyMessage = new ArrayList<>();
         emptyMessage.add("test");
         List<String> emptyMyRaffle = new ArrayList<>();
