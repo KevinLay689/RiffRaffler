@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity implements
         emptyRaffleTickets.add(raffleTicketModel);
 
         User user = new User(id, emptyRaffleTicketsOwned, emptyRaffleTickets);
-        databaseReference.child("user").push().setValue(user);
+        databaseReference.child("user").child(id).setValue(user);
     }
 
     private void insertUserIntoDatabase2(String id){

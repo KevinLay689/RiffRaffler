@@ -16,10 +16,16 @@
             android:layout_marginTop="5dp"
             android:text="Active Raffles"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="click me"
+            android:id="@+id/button12" />
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:id="@+id/completedRafflesWin">
+            android:layout_height="200dp"
+            android:id="@+id/completedRaffles">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -36,7 +42,7 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/completedRafflesLose">
+            android:id="@+id/activeRaffles">
 
         </android.support.v7.widget.RecyclerView>
 
