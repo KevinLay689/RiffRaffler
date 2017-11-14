@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.example.kevinlay.riffraffler.model.MessagesModel;
 import com.example.kevinlay.riffraffler.R;
 import com.example.kevinlay.riffraffler.adapter.MessagesAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,15 @@ public class MessagePageFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        //Database Reference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         prepareTestData();
     }
 

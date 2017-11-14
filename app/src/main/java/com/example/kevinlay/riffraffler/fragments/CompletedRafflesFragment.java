@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
 import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +33,15 @@ public class CompletedRafflesFragment extends Fragment {
     private RecyclerView recyclerView2;
     private MyRafflesAdapter adapter2;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        //Database Reference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         prepareTestData();
     }
 

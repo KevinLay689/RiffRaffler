@@ -8,7 +8,7 @@ public class RaffleModel {
 
     boolean isWinner;
     boolean isActive;
-    String raffleID;
+    public String raffleID;
 
     public RaffleModel(String raffleID) {
         isWinner = false;

@@ -14,7 +14,7 @@
             android:background="@drawable/my_border"
             android:paddingLeft="20dp"
             android:layout_marginTop="5dp"
-            android:text="Raffles Won"/>
+            android:text="Active Raffles"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:paddingLeft="20dp"
             android:layout_marginTop="5dp"
             android:textSize="20sp"
-            android:text="Raffles Lost"/>
+            android:text="Completed Raffles"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

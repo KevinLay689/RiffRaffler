@@ -17,9 +17,14 @@ import com.example.kevinlay.riffraffler.LoginActivity;
 import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
 import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
+import com.example.kevinlay.riffraffler.model.RaffleModel;
+import com.example.kevinlay.riffraffler.model.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +54,12 @@ public class MyRafflesFragment extends Fragment {
         //Database Reference
         databaseReference = FirebaseDatabase.getInstance().getReference();
         prepareTestData();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        insertDataToRecyclerView();
     }
 
     @Override
@@ -67,7 +77,7 @@ public class MyRafflesFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertDataToRecyclerView();
+                insertDataToDatbase();
                 //handleAdd();
             }
         });
@@ -78,20 +88,25 @@ public class MyRafflesFragment extends Fragment {
         return view;
     }
 
-    private void handleAdd() {
-//        Toast.makeText(getActivity(), "Clicked Button", Toast.LENGTH_SHORT).show();
-//        MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle ", 0);
-//        raffles.add(myRafflesModel1);
-//        adapter.notifyDataSetChanged();
+    private void insertDataToRecyclerView() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                RaffleModel raffleModel = dataSnapshot.getValue(RaffleModel.class);
+                Log.i(TAG, "onDataChange: datasnapshotChildren" + dataSnapshot.getChildren());
+                Log.i(TAG, "onDataChange: RaffleModelID " + raffleModel.raffleID);
+            }
 
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    private void insertDataToRecyclerView() {
-        double random = Math.random() * 99999;
-        MyRafflesModel myRafflesModel = new MyRafflesModel("name", "test", random+"" );
-        databaseReference.child(mAuth.getUid()).child("raffles").push().setValue(myRafflesModel);
+    private void insertDataToDatbase() {
+        MyRafflesModel myRafflesModel = new MyRafflesModel("name", "test", "0" );
+        databaseReference.child(mAuth.getUid()).child("myRaffles").push().setValue(myRafflesModel);
         raffles.add(myRafflesModel);
     }
 
