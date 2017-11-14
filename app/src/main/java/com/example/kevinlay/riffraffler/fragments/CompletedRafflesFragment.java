@@ -57,19 +57,19 @@ public class CompletedRafflesFragment extends Fragment {
 
     private void prepareTestData() {
         for(int i = 0; i < 20; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, 0);
+            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, "www.google.com", "");
             raffles.add(myRafflesModel1);
         }
         for(int i = 0; i < 20; i++) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, 0);
+            MyRafflesModel myRafflesModel1 = new MyRafflesModel("Kevins raffle "+ i, "www.google.com", "");
             raffles2.add(myRafflesModel1);
         }
         if(raffles.size() <= 0 ) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("No Raffles ", 0);
+            MyRafflesModel myRafflesModel1 = new MyRafflesModel("no raffle ", "www.google.com", "");
             raffles.add(myRafflesModel1);
         }
         if(raffles2.size() < 0 ) {
-            MyRafflesModel myRafflesModel1 = new MyRafflesModel("No Raffles ", 0);
+            MyRafflesModel myRafflesModel1 = new MyRafflesModel("no raffle ", "www.google.com", "");
             raffles2.add(myRafflesModel1);
         }
 

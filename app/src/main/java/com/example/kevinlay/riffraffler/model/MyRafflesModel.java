@@ -6,12 +6,18 @@ package com.example.kevinlay.riffraffler.model;
 
 public class MyRafflesModel {
 
-    private String raffleName;
-    private int image;
+    String raffleName;
+    String image;
+    String raffleID;
+    boolean isWinner;
+    boolean isActive;
 
-    public MyRafflesModel(String raffleName, int image) {
+    public MyRafflesModel(String raffleName, String image, String raffleID) {
+        isActive = true;
+        isWinner = false;
         this.raffleName = raffleName;
         this.image = image;
+        this.raffleID = raffleID;
     }
 
     public String getRaffleName() {
@@ -22,11 +28,11 @@ public class MyRafflesModel {
         this.raffleName = raffleName;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

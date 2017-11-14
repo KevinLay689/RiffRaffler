@@ -1,6 +1,7 @@
 package com.example.kevinlay.riffraffler;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -10,11 +11,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kevinlay.riffraffler.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends BaseActivity implements
         View.OnClickListener {
@@ -30,10 +37,15 @@ public class LoginActivity extends BaseActivity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    private DatabaseReference databaseReference;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Database Reference
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -83,7 +95,10 @@ public class LoginActivity extends BaseActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-                            Toast.makeText(getApplicationContext(), "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+                            String uID = currentFirebaseUser.getUid();
+                            insertUserIntoDatabase(uID);
+                            goToDashboard(uID);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -98,6 +113,23 @@ public class LoginActivity extends BaseActivity implements
                     }
                 });
         // [END create_user_with_email]
+    }
+
+    private void insertUserIntoDatabase(String id){
+        List<String> emptyMessage = new ArrayList<>();
+        emptyMessage.add("test");
+        List<String> emptyMyRaffle = new ArrayList<>();
+        emptyMyRaffle.add("test");
+        List<String> emptyRaffle = new ArrayList<>();
+        emptyRaffle.add("test");
+        UserModel model = new UserModel(emptyMessage, emptyMyRaffle, emptyRaffle, id);
+        databaseReference.child(id).setValue(model);
+    }
+
+    private void goToDashboard(String id) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("idKey", id);
+        startActivity(intent);
     }
 
     private void signIn(String email, String password) {
@@ -118,6 +150,11 @@ public class LoginActivity extends BaseActivity implements
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+                            //Toast.makeText(getApplicationContext(), "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+                            String uID = currentFirebaseUser.getUid();
+                            goToDashboard(uID);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -205,7 +242,6 @@ public class LoginActivity extends BaseActivity implements
             findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
-
             findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
         } else {
             mStatusTextView.setText("Signed Out");
