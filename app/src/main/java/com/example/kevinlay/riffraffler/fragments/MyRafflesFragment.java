@@ -29,7 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kevinlay on 11/8/17.
@@ -97,15 +99,31 @@ public class MyRafflesFragment extends Fragment {
 
                 raffles.clear();
 
-                for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    //Log.i(TAG, "onDataChange: User ID " + user.getUserId());
-                }
                 for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                     RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
                     //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
                     raffles.add(raffle);
                 }
+
+                for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    Log.i(TAG, "onDataChange: userIdkey is  " + user.getUserId());
+                    Log.i(TAG, "onDataChange: mauthkey is  " + mAuth.getUid());
+                    if(user.getUserId().equals(mAuth.getUid())) {
+//                        String key = snapshot.getKey();
+//                        Log.i(TAG, "onDataChange: key is  " + key);
+//                        Map<String, Object> mapKey2 = new HashMap<>();
+//                        mapKey2.put("users", key);
+//                        Map<String, Object> mapKey = new HashMap<>();
+//                        mapKey.put(, user.toMap(raffles));
+//                        databaseReference.updateChildren(mapKey);
+
+                        databaseReference.child("user").child(snapshot.getKey())
+                                .child("raffleTicketsOwned").setValue(raffles);
+                    }
+                    //Log.i(TAG, "onDataChange: User ID " + user.getUserId());
+                }
+
                 adapter.notifyDataSetChanged();
             }
 
