@@ -1,6 +1,8 @@
 package com.example.kevinlay.riffraffler.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kevinlay on 11/13/17.
@@ -52,5 +54,13 @@ public class User {
 
     public void addTickets(RaffleTicketModel raffle) {
         raffleTickets.add(raffle);
+    }
+
+    public Map<String, Object> toMap(List<RaffleTicketModel> raffleTicketModels) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId", this.userId);
+        map.put("raffleTickets", this.raffleTickets);
+        map.put("raffleTicketsOwned", raffleTicketModels);
+        return map;
     }
 }

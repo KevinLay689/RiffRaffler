@@ -99,24 +99,33 @@ public class MyRafflesFragment extends Fragment {
 
                 raffles.clear();
 
+//                for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
+//                    RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
+//                    //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
+//
+//                    raffles.add(raffle);
+//                }
+
                 for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                     RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
                     //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
-                    raffles.add(raffle);
+
+//                    Log.i(TAG, "onDataChange: ownerKey" + raffle.getOwner());
+//                    Log.i(TAG, "onDataChange: authkey" + mAuth.getUid());
+                    if(raffle.getOwner().equals(mAuth.getUid())) {
+                        raffles.add(raffle);
+                        //Log.i(TAG, "onDataChange: inside adding raffle");
+                    }
+
                 }
+
+
 
                 for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
                     User user = snapshot.getValue(User.class);
-                    Log.i(TAG, "onDataChange: userIdkey is  " + user.getUserId());
-                    Log.i(TAG, "onDataChange: mauthkey is  " + mAuth.getUid());
+                    //Log.i(TAG, "onDataChange: userIdkey is  " + user.getUserId());
+                    //Log.i(TAG, "onDataChange: mauthkey is  " + mAuth.getUid());
                     if(user.getUserId().equals(mAuth.getUid())) {
-//                        String key = snapshot.getKey();
-//                        Log.i(TAG, "onDataChange: key is  " + key);
-//                        Map<String, Object> mapKey2 = new HashMap<>();
-//                        mapKey2.put("users", key);
-//                        Map<String, Object> mapKey = new HashMap<>();
-//                        mapKey.put(, user.toMap(raffles));
-//                        databaseReference.updateChildren(mapKey);
 
                         databaseReference.child("user").child(snapshot.getKey())
                                 .child("raffleTicketsOwned").setValue(raffles);
