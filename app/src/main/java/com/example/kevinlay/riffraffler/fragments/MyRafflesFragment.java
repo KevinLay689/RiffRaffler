@@ -1,5 +1,6 @@
 package com.example.kevinlay.riffraffler.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.kevinlay.riffraffler.LoginActivity;
@@ -76,6 +79,7 @@ public class MyRafflesFragment extends Fragment {
         Log.i(TAG, "onCreateView: " + idKey);
 
         View view = inflater.inflate(R.layout.fragment_my_raffles_layout, container, false);
+
         recyclerView = view.findViewById(R.id.myRafflesRecycler);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +87,14 @@ public class MyRafflesFragment extends Fragment {
             public void onClick(View view) {
                 insertDataToDatbase();
                 //handleAdd();
+
             }
         });
         adapter = new MyRafflesAdapter(raffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
         return view;
     }
 
