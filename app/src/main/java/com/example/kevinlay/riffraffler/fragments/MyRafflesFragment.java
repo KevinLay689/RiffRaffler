@@ -1,5 +1,6 @@
 package com.example.kevinlay.riffraffler.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -8,8 +9,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
 import com.example.kevinlay.riffraffler.R;
@@ -37,7 +41,9 @@ public class MyRafflesFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
     private FloatingActionButton floatingActionButton;
-
+    private Button button;
+    private EditText editText;
+    private Dialog dialog;
     private String idKey;
 
     private FirebaseAuth mAuth;
@@ -49,7 +55,6 @@ public class MyRafflesFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         //Database Reference
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        prepareTestData();
     }
 
     @Override
@@ -69,12 +74,26 @@ public class MyRafflesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_my_raffles_layout, container, false);
 
+        dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.create_raffle_layout);
+
+        editText = (EditText) dialog.findViewById(R.id.createRaffleName);
+        button = (Button) dialog.findViewById(R.id.createRaffleSubmit);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertDataToDatbase(editText.getText().toString());
+                dialog.dismiss();
+            }
+        });
+
         recyclerView = view.findViewById(R.id.myRafflesRecycler);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertDataToDatbase();
+                dialog.show();
                 //handleAdd();
 
             }
@@ -83,7 +102,6 @@ public class MyRafflesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         return view;
     }
 
@@ -94,32 +112,15 @@ public class MyRafflesFragment extends Fragment {
 
                 raffles.clear();
 
-//                for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
-//                    RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-//                    //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
-//
-//                    raffles.add(raffle);
-//                }
-
                 for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                     RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-                    //Log.i(TAG, "onDataChange: Raffles " + raffle.getRaffleId());
-
-//                    Log.i(TAG, "onDataChange: ownerKey" + raffle.getOwner());
-//                    Log.i(TAG, "onDataChange: authkey" + mAuth.getUid());
                     if(raffle.getOwner().equals(mAuth.getUid())) {
                         raffles.add(raffle);
-                        //Log.i(TAG, "onDataChange: inside adding raffle");
                     }
-
                 }
-
-
 
                 for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
                     User user = snapshot.getValue(User.class);
-                    //Log.i(TAG, "onDataChange: userIdkey is  " + user.getUserId());
-                    //Log.i(TAG, "onDataChange: mauthkey is  " + mAuth.getUid());
                     if(user.getUserId().equals(mAuth.getUid())) {
 
                         databaseReference.child("user").child(snapshot.getKey())
@@ -138,26 +139,13 @@ public class MyRafflesFragment extends Fragment {
         });
     }
 
-    private void insertDataToDatbase() {
+    private void insertDataToDatbase(String s) {
         String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999)); ;
         List<String> emptyList = new ArrayList<>();
 
-        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList);
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, s);
 
         databaseReference.child("raffles").push().setValue(raffleTicketModel);
-    }
-
-//    private void insertDataToDatbase2() {
-//        MyRafflesModel myRafflesModel = new MyRafflesModel("name", "test", "0" );
-//        databaseReference.child(mAuth.getUid()).child("myRaffles").push().setValue(myRafflesModel);
-//        raffles.add(myRafflesModel);
-//    }
-
-    private void prepareTestData() {
-//        for(int i = 0; i < 3; i++) {
-//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
-//            raffles.add(myRafflesModel1);
-//        }
     }
 
 }
