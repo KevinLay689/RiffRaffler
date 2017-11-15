@@ -84,6 +84,7 @@ public class MyRafflesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 insertDataToDatbase(editText.getText().toString());
+                editText.getText().clear();
                 dialog.dismiss();
             }
         });

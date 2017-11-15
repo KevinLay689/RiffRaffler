@@ -78,6 +78,7 @@ public class CompletedRafflesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 insertDataToDatabase(editText.getText().toString());
+                editText.getText().clear();
                 dialog.dismiss();
             }
         });

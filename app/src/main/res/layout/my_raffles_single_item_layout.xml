@@ -1,26 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="100dp">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="10dp"
         android:id="@+id/myRaffleImage"
-        android:src="@drawable/ic_launcher_background"
-        android:gravity="center"/>
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"
+        android:tint="@color/colorPrimary"
+        android:src="@drawable/ic_ticket_confirmation" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
+        android:weightSum="2"
+        android:layout_toRightOf="@id/myRaffleImage"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
-        android:text="this is a test"
-        android:id="@+id/myRaffleText"
-        android:textSize="20sp"
-        android:layout_weight="2"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/myRaffleText"
+            android:layout_weight="1"
+            android:textColor="#99000000"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kevin's Raffle"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/myRaffleDesc"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="start"
+            android:layout_height="wrap_content"
+            android:text="Raffle #: 26762"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

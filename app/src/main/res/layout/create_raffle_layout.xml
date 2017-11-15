@@ -4,27 +4,26 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/createRaffleName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:hint="Raffle Id"
+        android:hint="Enter Raffle Name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp"
         android:ems="10"
-        android:inputType="number"/>
-
+        android:inputType="textCapWords"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/createRaffleSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editText2"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_below="@+id/editText2"
+        android:layout_alignEnd="@+id/createRaffleName"
+        android:layout_alignLeft="@+id/createRaffleName"
+        android:layout_alignRight="@+id/createRaffleName"
+        android:layout_alignStart="@+id/createRaffleName"
+        android:layout_below="@+id/createRaffleName"
         android:layout_marginTop="13dp"
-        android:text="Add Raffle" />
+        android:text="Create Raffle" />
 
 </RelativeLayout>
