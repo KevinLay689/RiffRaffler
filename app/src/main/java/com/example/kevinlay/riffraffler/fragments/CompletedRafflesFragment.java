@@ -158,7 +158,7 @@ public class CompletedRafflesFragment extends Fragment {
             Log.i(TAG, "insertDataToDatbase: users " + databaseReference.child("user" + "")
                     .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
         } else {
-            Toast.makeText(getActivity(),"Could not find id: "+ id, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Invalid Raffle Id: "+ id, Toast.LENGTH_LONG).show();
         }
 
     }

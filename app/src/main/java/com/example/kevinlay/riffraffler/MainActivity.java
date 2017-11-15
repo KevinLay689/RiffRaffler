@@ -23,8 +23,13 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private int[] tabIcons = {
+            R.drawable.ic_account_box,
+            R.drawable.ic_ticket_confirmation,
+            R.drawable.ic_message_text
+    };
 
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        this.setTitle("     Raffle Now");
+        this.setTitle("                     Raffle Now");
 
         String id = getIntent().getStringExtra("idKey");
         String key = "key";
         Bundle bundle = new Bundle();
         bundle.putString(key, id);
-        Log.i(TAG, "onCreate: "+ id );
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -62,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     @Override
