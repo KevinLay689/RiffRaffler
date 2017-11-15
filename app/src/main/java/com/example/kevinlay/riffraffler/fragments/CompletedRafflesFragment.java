@@ -139,7 +139,11 @@ public class CompletedRafflesFragment extends Fragment {
                     if(user.getUserId().equals(mAuth.getUid())) {
                         for (int i = 0; i < user.getRaffleTickets().size(); i++) {
                             if(user.getRaffleTickets().get(i).isActive()) {
-                                activeRaffles.add(user.getRaffleTickets().get(i));
+                                if(user.getRaffleTickets().get(i).getRaffleId().equals("0")){
+                                    Log.i(TAG, "onDataChange: found a 0");
+                                } else {
+                                    activeRaffles.add(user.getRaffleTickets().get(i));
+                                }
                             }
                         }
 //                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
