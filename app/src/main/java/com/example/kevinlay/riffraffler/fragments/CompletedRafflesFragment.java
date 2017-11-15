@@ -27,7 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -49,6 +51,7 @@ public class CompletedRafflesFragment extends Fragment {
     private DatabaseReference databaseReference;
 
     private List<String> raffleIds = new ArrayList<>();
+    Map<String, String> map = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,6 @@ public class CompletedRafflesFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         //Database Reference
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        prepareTestData();
     }
 
     @Override
@@ -79,6 +81,7 @@ public class CompletedRafflesFragment extends Fragment {
                 dialog.dismiss();
             }
         });
+
         recyclerView = view.findViewById(R.id.activeRaffles);
         adapter = new MyRafflesAdapter(completedRaffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -122,6 +125,11 @@ public class CompletedRafflesFragment extends Fragment {
                     RaffleTicketModel raffleTicketModel = dataSnapshot2.getValue(RaffleTicketModel.class);
                     String idKey = raffleTicketModel.getRaffleId();
                     raffleIds.add(idKey);
+
+                    String raffleName = raffleTicketModel.getRaffleName();
+
+                    map.put(idKey, raffleName);
+
                 }
 
                 Log.i(TAG, "onDataChange: "+ raffleIds.toString());
@@ -154,7 +162,12 @@ public class CompletedRafflesFragment extends Fragment {
 
     private void insertDataToDatabase(String id) {
         if(raffleIds.contains(id)) {
-            activeRaffles.add(new RaffleTicketModel(id, "someone", new ArrayList<String>()));
+
+            String name = map.get(id);
+
+            Log.i(TAG, "insertDataToDatabase: name " + name);
+
+            activeRaffles.add(new RaffleTicketModel(id, "", new ArrayList<String>(), name));
             Log.i(TAG, "insertDataToDatbase: users " + databaseReference.child("user" + "")
                     .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
         } else {
@@ -162,33 +175,5 @@ public class CompletedRafflesFragment extends Fragment {
         }
 
     }
-    private void insertDataToDatabase2() {
-        RaffleTicketModel raffleTicketModel = new RaffleTicketModel("me", "someone", new ArrayList<String>());
-        raffleTicketModel.setActive(false);
-        activeRaffles.add(raffleTicketModel);
-        Log.i(TAG, "insertDataToDatbase2: users " + databaseReference.child("user" + "")
-                .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
 
-    }
-
-
-    private void prepareTestData() {
-//        for(int i = 0; i < 20; i++) {
-//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
-//            raffles.add(myRafflesModel1);
-//        }
-//        for(int i = 0; i < 20; i++) {
-//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("Kevins raffle "+ i, "www.google.com", new ArrayList<String>());
-//            raffles2.add(myRafflesModel1);
-//        }
-//        if(raffles.size() <= 0 ) {
-//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("no raffle ", "www.google.com", new ArrayList<String>());
-//            raffles.add(myRafflesModel1);
-//        }
-//        if(raffles2.size() < 0 ) {
-//            RaffleTicketModel myRafflesModel1 = new RaffleTicketModel("no raffle ", "www.google.com", new ArrayList<String>());
-//            raffles2.add(myRafflesModel1);
-//        }
-
-    }
 }
