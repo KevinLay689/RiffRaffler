@@ -117,14 +117,6 @@ public class CompletedRafflesFragment extends Fragment {
                 activeRaffles.clear();
                 completedRaffles.clear();
                 raffleIds.clear();
-//                for(DataSnapshot dataSnapshot1 : dataSnapshot.child("user").getChildren()) {
-//                    User user = dataSnapshot1.getValue(User.class);
-//                    if(user.getUserId().equals(mAuth.getUid())) {
-//                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
-//                            activeRaffles.add(user.getRaffleTickets().get(i));
-//                        }
-//                    }
-//                }
 
                 for(DataSnapshot dataSnapshot2 : dataSnapshot.child("raffles").getChildren()) {
                     RaffleTicketModel raffleTicketModel = dataSnapshot2.getValue(RaffleTicketModel.class);
@@ -140,17 +132,12 @@ public class CompletedRafflesFragment extends Fragment {
                         for (int i = 0; i < user.getRaffleTickets().size(); i++) {
                             if(user.getRaffleTickets().get(i).isActive()) {
                                 if(user.getRaffleTickets().get(i).getRaffleId().equals("0")){
-                                    Log.i(TAG, "onDataChange: found a 0");
+                                    //Log.i(TAG, "onDataChange: found a 0");
                                 } else {
                                     activeRaffles.add(user.getRaffleTickets().get(i));
                                 }
                             }
                         }
-//                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
-//                            if(!user.getRaffleTickets().get(i).isActive()) {
-//                                completedRaffles.add(user.getRaffleTickets().get(i));
-//                            }
-//                        }
                     }
                 }
 

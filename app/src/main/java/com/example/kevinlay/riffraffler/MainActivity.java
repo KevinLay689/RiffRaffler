@@ -1,10 +1,17 @@
 package com.example.kevinlay.riffraffler;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.kevinlay.riffraffler.adapter.MessagesAdapter;
 import com.example.kevinlay.riffraffler.fragments.CompletedRafflesFragment;
@@ -25,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+
+        this.setTitle("     Raffle Now");
 
         String id = getIntent().getStringExtra("idKey");
         String key = "key";
@@ -55,5 +64,26 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_action_bar, menu);
+        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
+                ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
+        getSupportActionBar().setIcon(R.drawable.ic_menu2);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout_action:
+                mAuth.signOut();
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+        }
+        return true;
+    }
 }

@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
 import com.example.kevinlay.riffraffler.model.User;
-import com.example.kevinlay.riffraffler.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -131,14 +130,7 @@ public class LoginActivity extends BaseActivity implements
     }
 
     private void insertUserIntoDatabase2(String id){
-        List<String> emptyMessage = new ArrayList<>();
-        emptyMessage.add("test");
-        List<String> emptyMyRaffle = new ArrayList<>();
-        emptyMyRaffle.add("test");
-        List<String> emptyRaffle = new ArrayList<>();
-        emptyRaffle.add("test");
-        UserModel model = new UserModel(emptyMessage, emptyMyRaffle, emptyRaffle, id);
-        databaseReference.child(id).setValue(model);
+
     }
 
     private void goToDashboard(String id) {
@@ -258,6 +250,9 @@ public class LoginActivity extends BaseActivity implements
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
             findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
+
+            goToDashboard(mAuth.getUid());
+
         } else {
             mStatusTextView.setText("Signed Out");
             mDetailTextView.setText(null);

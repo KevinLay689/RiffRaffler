@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.kevinlay.riffraffler.model.MyRafflesModel;
 import com.example.kevinlay.riffraffler.R;
 import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
 
