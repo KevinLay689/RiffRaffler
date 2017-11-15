@@ -1,6 +1,7 @@
 package com.example.kevinlay.riffraffler.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,21 +58,29 @@ public class CompletedRafflesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_completed_raffles_layout, container, false);
-        recyclerView = view.findViewById(R.id.completedRaffles);
+        insertDataToRecyclerView();
+        recyclerView = view.findViewById(R.id.activeRaffles);
         adapter = new MyRafflesAdapter(completedRaffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        Button b = ((Button) view.findViewById(R.id.button12));
+        FloatingActionButton b = ((FloatingActionButton) view.findViewById(R.id.button12));
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 insertDataToDatabase();
             }
         });
+//        Button b2 = ((Button) view.findViewById(R.id.button123));
+//        b2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                insertDataToDatabase2();
+//            }
+//        });
 
-        recyclerView2 = view.findViewById(R.id.activeRaffles);
+        recyclerView2 = view.findViewById(R.id.completedRaffles);
         adapter2 = new MyRafflesAdapter(activeRaffles);
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
@@ -79,31 +88,39 @@ public class CompletedRafflesFragment extends Fragment {
 
         return view;
     }
-
-
     private void insertDataToRecyclerView() {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                activeRaffles.clear();
                 completedRaffles.clear();
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.child("user").getChildren()) {
+//                    User user = dataSnapshot1.getValue(User.class);
+//                    if(user.getUserId().equals(mAuth.getUid())) {
+//                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
+//                            activeRaffles.add(user.getRaffleTickets().get(i));
+//                        }
+//                    }
+//                }
 
-                for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
-                    RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-                    if(raffle.getOwner().equals(mAuth.getUid())) {
-                        completedRaffles.add(raffle);
-                        //Log.i(TAG, "onDataChange: inside adding raffle");
-                    }
-                }
-                for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
-                    User user = snapshot.getValue(User.class);
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.child("user").getChildren()) {
+                    User user = dataSnapshot1.getValue(User.class);
                     if(user.getUserId().equals(mAuth.getUid())) {
-
-                        databaseReference.child("user").child(snapshot.getKey())
-                                .child("raffleTicketsOwned").setValue(completedRaffles);
+                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
+                            if(user.getRaffleTickets().get(i).isActive()) {
+                                activeRaffles.add(user.getRaffleTickets().get(i));
+                            }
+                        }
+//                        for (int i = 0; i < user.getRaffleTickets().size(); i++) {
+//                            if(!user.getRaffleTickets().get(i).isActive()) {
+//                                completedRaffles.add(user.getRaffleTickets().get(i));
+//                            }
+//                        }
                     }
                 }
+
                 adapter.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
             }
 
             @Override
@@ -115,8 +132,15 @@ public class CompletedRafflesFragment extends Fragment {
 
     private void insertDataToDatabase() {
         activeRaffles.add(new RaffleTicketModel("me", "someone", new ArrayList<String>()));
-        Log.i(TAG, "insertDataToDatbase: users " + databaseReference.child("user" +
-                "")
+        Log.i(TAG, "insertDataToDatbase: users " + databaseReference.child("user" + "")
+                .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
+
+    }
+    private void insertDataToDatabase2() {
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel("me", "someone", new ArrayList<String>());
+        raffleTicketModel.setActive(false);
+        activeRaffles.add(raffleTicketModel);
+        Log.i(TAG, "insertDataToDatbase2: users " + databaseReference.child("user" + "")
                 .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
 
     }

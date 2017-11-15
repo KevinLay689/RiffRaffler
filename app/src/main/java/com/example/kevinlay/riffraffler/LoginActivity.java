@@ -120,7 +120,6 @@ public class LoginActivity extends BaseActivity implements
     private void insertUserIntoDatabase(String id){
         List<String> emptyList = new ArrayList<>();
         List<RaffleTicketModel> emptyRaffleTicketsOwned = new ArrayList<>();
-        emptyList.add("0");
         RaffleTicketModel raffleTicketModel = new RaffleTicketModel("0", "0", emptyList);
         emptyRaffleTicketsOwned.add(raffleTicketModel);
 
