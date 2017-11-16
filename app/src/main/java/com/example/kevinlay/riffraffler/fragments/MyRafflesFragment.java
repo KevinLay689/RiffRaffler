@@ -151,6 +151,15 @@ public class MyRafflesFragment extends Fragment {
                     //removed.clear();
                     totalUsers.clear();
 
+                    myRaffles.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
+                        RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
+                        if (raffle.getOwner().equals(mAuth.getUid())) {
+                            myRaffles.add(raffle);
+                            Log.i(TAG, "onDataChange: raffleids" + raffle.getRaffleId());
+                        }
+                    }
+
                     for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
                         if (raffle.getOwner().equals(mAuth.getUid()) && raffle.getRaffleId().equals(raffleEndedId)) {
