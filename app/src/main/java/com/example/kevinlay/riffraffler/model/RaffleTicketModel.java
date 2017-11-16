@@ -75,4 +75,5 @@ public class RaffleTicketModel {
     public String getRaffleName() {
         return raffleName;
     }
+
 }

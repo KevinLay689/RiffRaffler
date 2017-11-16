@@ -97,13 +97,6 @@ public class CompletedRafflesFragment extends Fragment {
                 dialog.show();
             }
         });
-//        Button b2 = ((Button) view.findViewById(R.id.button123));
-//        b2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                insertDataToDatabase2();
-//            }
-//        });
 
         recyclerView2 = view.findViewById(R.id.completedRaffles);
         adapter2 = new MyRafflesAdapter(activeRaffles);
@@ -162,15 +155,19 @@ public class CompletedRafflesFragment extends Fragment {
     }
 
     private void insertDataToDatabase(String id) {
+
         if(raffleIds.contains(id)) {
 
             String name = map.get(id);
-
             Log.i(TAG, "insertDataToDatabase: name " + name);
-
             activeRaffles.add(new RaffleTicketModel(id, "", new ArrayList<String>(), name));
-            Log.i(TAG, "insertDataToDatbase: users " + databaseReference.child("user" + "")
-                    .child(mAuth.getUid()).child("raffleTickets").setValue(activeRaffles));
+            databaseReference.child("user" + "")
+                    .child(mAuth.getUid())
+                    .child("raffleTickets")
+                    .setValue(activeRaffles);
+
+            Toast.makeText(getActivity(),"Added Raffle: "+ id, Toast.LENGTH_LONG).show();
+
         } else {
             Toast.makeText(getActivity(),"Invalid Raffle Id: "+ id, Toast.LENGTH_LONG).show();
         }

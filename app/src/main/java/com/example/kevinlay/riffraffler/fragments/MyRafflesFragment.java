@@ -39,7 +39,10 @@ public class MyRafflesFragment extends Fragment {
 
     private static final String TAG = "MyRafflesFragment";
 
-    private List<RaffleTicketModel> raffles = new ArrayList<>();
+    private List<RaffleTicketModel> myRaffles = new ArrayList<>();
+    List<User> users = new ArrayList<>();
+    List<RaffleTicketModel> removed = new ArrayList<>();
+    private List<User> totalUsers = new ArrayList<>();
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
     private FloatingActionButton floatingActionButton;
@@ -131,14 +134,12 @@ public class MyRafflesFragment extends Fragment {
             }
         });
 
-        adapter = new MyRafflesAdapter(raffles);
+        adapter = new MyRafflesAdapter(myRaffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         return view;
     }
-
-    List<User> users = new ArrayList<>();
 
     private void insertDataToRecyclerView() {
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -147,46 +148,67 @@ public class MyRafflesFragment extends Fragment {
 
                 if(isUpdatingRecord) {
 
+                    //removed.clear();
+                    totalUsers.clear();
+
                     for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
                         if (raffle.getOwner().equals(mAuth.getUid())) {
+                            isUpdatingRecord = false;
                             raffle.setActive(false);
                             databaseReference.child("raffles").child(snapshot.getKey()).setValue(raffle);
                         }
                     }
 
+
                     for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
                         User user = snapshot.getValue(User.class);
+                        totalUsers.add(user);
                         if (user.getUserId().equals(mAuth.getUid())) {
+                            databaseReference.child("user").child(snapshot.getKey() )
+                                    .child("raffleTicketsOwned").setValue(myRaffles);
 
-                            databaseReference.child("user").child(snapshot.getKey())
-                                    .child("raffleTicketsOwned").setValue(raffles);
                         }
-                        //Log.i(TAG, "onDataChange: User ID " + user.getUserId());
                     }
+
+//                    for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
+//                        User user = snapshot.getValue(User.class);
+//                        removed.clear();
+//
+//                        for (int j = 0; j < user.getRaffleTickets().size(); j++) {
+//                            if(user.getRaffleTickets().get(j).getRaffleId().equals(raffleEndedId)) {
+//                                user.getRaffleTickets().get(j).setActive(false);
+//                            }
+//                            removed.add(user.getRaffleTickets().get(j));
+//                        }
+//                    }
 
                 } else {
 
-                    raffles.clear();
+                    myRaffles.clear();
                     users.clear();
+
                     for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-                        if (raffle.getOwner().equals(mAuth.getUid())) {
-                            raffles.add(raffle);
+                        if (raffle.getOwner().equals(mAuth.getUid()) ) {
+                            myRaffles.add(raffle);
+                            Log.i(TAG, "onDataChange: current raffle " + showData(myRaffles));
                         }
                     }
+
+                    Log.i(TAG, "onDataChange: my raffles size " + myRaffles.size());
 
                     for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
                         User user = snapshot.getValue(User.class);
                         users.add(user);
                         if (user.getUserId().equals(mAuth.getUid())) {
                             databaseReference.child("user").child(snapshot.getKey())
-                                    .child("raffleTicketsOwned").setValue(raffles);
+                                    .child("raffleTicketsOwned").setValue(myRaffles);
+                            Log.i(TAG, "onDataChange: inside user");
                         }
-                        //Log.i(TAG, "onDataChange: User ID " + user.getUserId());
                     }
 
-                    Log.i(TAG, "onDataChange: there is a winner");
+                    //Log.i(TAG, "onDataChange: there is a winner");
                 }
 
                 adapter.notifyDataSetChanged();
@@ -198,32 +220,48 @@ public class MyRafflesFragment extends Fragment {
             }
         });
     }
+
+
     boolean isUpdatingRecord = false;
 
     private void insertDataToDatbase(String s) {
         isUpdatingRecord = false;
-        String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999)); ;
+        String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999));
         List<String> emptyList = new ArrayList<>();
-
         RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, s);
-
         databaseReference.child("raffles").push().setValue(raffleTicketModel);
     }
+//
+//    private void endRaffle(String s) {
+//
+//        isUpdatingRecord = true;
+//
+//        for(int i = 0; i < raffles.size(); i++) {
+//            if(raffles.get(i).getRaffleId().equals(s)) {
+//                raffles.get(i).setActive(false);
+//                databaseReference.child("user")
+//                        .child(mAuth.getUid())
+//                        .child("raffleTicketsOwned")
+//                        .setValue(raffles);
+//            }
+//        }
+//
+//
+//    }
 
     private void endRaffle(String s) {
 
         isUpdatingRecord = true;
 
-        for(int i = 0; i < raffles.size(); i++) {
-            if(raffles.get(i).getRaffleId().equals(s)) {
-                raffles.get(i).setActive(false);
+        for(int i = 0; i < myRaffles.size(); i++) {
+            if(myRaffles.get(i).getRaffleId().equals(s)) {
+                myRaffles.get(i).setActive(false);
                 databaseReference.child("user")
                         .child(mAuth.getUid())
                         .child("raffleTicketsOwned")
-                        .setValue(raffles);
+                        .setValue(myRaffles);
             }
         }
-
     }
 
     private void selectWinner(String s) {
@@ -247,7 +285,7 @@ public class MyRafflesFragment extends Fragment {
 
             int winner = rand.nextInt((max - min) + 1) + min - 1;
 
-            Log.i(TAG, "selectWinner: winner number " + winner);
+            //Log.i(TAG, "selectWinner: winner number " + winner);
 
             while(winner >= usersInRaffle.size()) {
                 winner--;
@@ -263,6 +301,17 @@ public class MyRafflesFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(),"No one in raffle ", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private String showData(List<RaffleTicketModel> raffleTicketModels) {
+        String s = "";
+        for (int i = 0; i< raffleTicketModels.size(); i++) {
+            s += raffleTicketModels.get(i).getRaffleId();
+            s+= ", ";
+        }
+
+        return s;
+
     }
 
 }

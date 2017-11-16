@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        this.setTitle("                     Raffle Now");
+        //this.setTitle("                     Raffle Now");
+
+        this.setTitle("UserID: " + mAuth.getUid());
 
         String id = getIntent().getStringExtra("idKey");
         String key = "key";
