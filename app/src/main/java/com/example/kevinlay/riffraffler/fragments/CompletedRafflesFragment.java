@@ -126,7 +126,7 @@ public class CompletedRafflesFragment extends Fragment {
 
                 }
 
-                Log.i(TAG, "onDataChange: "+ raffleIds.toString());
+                //Log.i(TAG, "onDataChange: "+ raffleIds.toString());
 
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.child("user").getChildren()) {
                     User user = dataSnapshot1.getValue(User.class);
@@ -159,7 +159,7 @@ public class CompletedRafflesFragment extends Fragment {
         if(raffleIds.contains(id)) {
 
             String name = map.get(id);
-            Log.i(TAG, "insertDataToDatabase: name " + name);
+            //Log.i(TAG, "insertDataToDatabase: name " + name);
             activeRaffles.add(new RaffleTicketModel(id, "", new ArrayList<String>(), name));
             databaseReference.child("user" + "")
                     .child(mAuth.getUid())

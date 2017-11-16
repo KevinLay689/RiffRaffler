@@ -40,8 +40,8 @@ public class MyRafflesFragment extends Fragment {
     private static final String TAG = "MyRafflesFragment";
 
     private List<RaffleTicketModel> myRaffles = new ArrayList<>();
-    List<User> users = new ArrayList<>();
-    List<RaffleTicketModel> removed = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private List<RaffleTicketModel> removed = new ArrayList<>();
     private List<User> totalUsers = new ArrayList<>();
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
@@ -133,8 +133,8 @@ public class MyRafflesFragment extends Fragment {
                 return true;
             }
         });
-
-        adapter = new MyRafflesAdapter(myRaffles);
+        adapter = new MyRafflesAdapter(removed);
+        //adapter = new MyRafflesAdapter(myRaffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
@@ -153,8 +153,7 @@ public class MyRafflesFragment extends Fragment {
 
                     for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-                        if (raffle.getOwner().equals(mAuth.getUid())) {
-                            isUpdatingRecord = false;
+                        if (raffle.getOwner().equals(mAuth.getUid()) && raffle.getRaffleId().equals(raffleEndedId)) {
                             raffle.setActive(false);
                             databaseReference.child("raffles").child(snapshot.getKey()).setValue(raffle);
                         }
@@ -171,17 +170,16 @@ public class MyRafflesFragment extends Fragment {
                         }
                     }
 
-//                    for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
-//                        User user = snapshot.getValue(User.class);
-//                        removed.clear();
-//
-//                        for (int j = 0; j < user.getRaffleTickets().size(); j++) {
-//                            if(user.getRaffleTickets().get(j).getRaffleId().equals(raffleEndedId)) {
-//                                user.getRaffleTickets().get(j).setActive(false);
-//                            }
-//                            removed.add(user.getRaffleTickets().get(j));
-//                        }
-//                    }
+                    Log.i(TAG, "onDataChange: my raffles size inside end raffle " + myRaffles.size());
+                    Log.i(TAG, "onDataChange: my removed size inside end raffle " + removed.size());
+
+                    removed.clear();
+                    for(int i = 0; i < myRaffles.size(); i++) {
+                        if(myRaffles.get(i).isActive()) {
+                            removed.add(myRaffles.get(i));
+                            Log.i(TAG, "onDataChange: adding active raffle ");
+                        }
+                    }
 
                 } else {
 
@@ -190,13 +188,11 @@ public class MyRafflesFragment extends Fragment {
 
                     for (DataSnapshot snapshot : dataSnapshot.child("raffles").getChildren()) {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
-                        if (raffle.getOwner().equals(mAuth.getUid()) ) {
+                        if (raffle.getOwner().equals(mAuth.getUid())) {
                             myRaffles.add(raffle);
-                            Log.i(TAG, "onDataChange: current raffle " + showData(myRaffles));
+                            Log.i(TAG, "onDataChange: raffleids" + raffle.getRaffleId());
                         }
                     }
-
-                    Log.i(TAG, "onDataChange: my raffles size " + myRaffles.size());
 
                     for (DataSnapshot snapshot : dataSnapshot.child("user").getChildren()) {
                         User user = snapshot.getValue(User.class);
@@ -204,9 +200,19 @@ public class MyRafflesFragment extends Fragment {
                         if (user.getUserId().equals(mAuth.getUid())) {
                             databaseReference.child("user").child(snapshot.getKey())
                                     .child("raffleTicketsOwned").setValue(myRaffles);
-                            Log.i(TAG, "onDataChange: inside user");
+                            //Log.i(TAG, "onDataChange: inside user");
                         }
                     }
+
+                    removed.clear();
+                    for(int i = 0; i < myRaffles.size(); i++) {
+                        if(myRaffles.get(i).isActive()) {
+                            removed.add(myRaffles.get(i));
+                            Log.i(TAG, "onDataChange: adding active raffle ");
+                        }
+                    }
+                    Log.i(TAG, "onDataChange: my raffles size inside end raffle " + myRaffles.size());
+                    Log.i(TAG, "onDataChange: my removed size inside end raffle " + removed.size());
 
                     //Log.i(TAG, "onDataChange: there is a winner");
                 }
@@ -230,24 +236,9 @@ public class MyRafflesFragment extends Fragment {
         List<String> emptyList = new ArrayList<>();
         RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, s);
         databaseReference.child("raffles").push().setValue(raffleTicketModel);
+
+        Log.i(TAG, "calling from: removed ");
     }
-//
-//    private void endRaffle(String s) {
-//
-//        isUpdatingRecord = true;
-//
-//        for(int i = 0; i < raffles.size(); i++) {
-//            if(raffles.get(i).getRaffleId().equals(s)) {
-//                raffles.get(i).setActive(false);
-//                databaseReference.child("user")
-//                        .child(mAuth.getUid())
-//                        .child("raffleTicketsOwned")
-//                        .setValue(raffles);
-//            }
-//        }
-//
-//
-//    }
 
     private void endRaffle(String s) {
 
@@ -255,13 +246,30 @@ public class MyRafflesFragment extends Fragment {
 
         for(int i = 0; i < myRaffles.size(); i++) {
             if(myRaffles.get(i).getRaffleId().equals(s)) {
+                Log.i(TAG, "endRaffle: id changing is" + myRaffles.get(i).getRaffleId());
                 myRaffles.get(i).setActive(false);
+                myRaffles.remove(myRaffles.get(i));
                 databaseReference.child("user")
                         .child(mAuth.getUid())
                         .child("raffleTicketsOwned")
                         .setValue(myRaffles);
+                adapter.notifyDataSetChanged();
+
             }
         }
+
+//        removed.clear();
+//        Log.i(TAG, "endRaffle: removed ");
+//
+//        for(int i = 0; i < myRaffles.size(); i++) {
+//            if(myRaffles.get(i).isActive()) {
+//                removed.add(myRaffles.get(i));
+//                Log.i(TAG, "endRaffle: ");
+//            }
+//        }
+//
+//        adapter.notifyDataSetChanged();
+
     }
 
     private void selectWinner(String s) {
@@ -285,8 +293,6 @@ public class MyRafflesFragment extends Fragment {
 
             int winner = rand.nextInt((max - min) + 1) + min - 1;
 
-            //Log.i(TAG, "selectWinner: winner number " + winner);
-
             while(winner >= usersInRaffle.size()) {
                 winner--;
             }
@@ -303,15 +309,5 @@ public class MyRafflesFragment extends Fragment {
         }
     }
 
-    private String showData(List<RaffleTicketModel> raffleTicketModels) {
-        String s = "";
-        for (int i = 0; i< raffleTicketModels.size(); i++) {
-            s += raffleTicketModels.get(i).getRaffleId();
-            s+= ", ";
-        }
-
-        return s;
-
-    }
 
 }
