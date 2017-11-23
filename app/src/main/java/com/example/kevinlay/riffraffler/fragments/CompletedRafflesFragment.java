@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -95,6 +97,9 @@ public class CompletedRafflesFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider));
+
         FloatingActionButton b = ((FloatingActionButton) view.findViewById(R.id.button12));
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +114,8 @@ public class CompletedRafflesFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setAdapter(adapter2);
+        recyclerView2.addItemDecoration(itemDecorator);
+
 
         return view;
     }
