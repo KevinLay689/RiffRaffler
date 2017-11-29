@@ -45,6 +45,10 @@ public class CompletedRafflesFragment extends Fragment {
     private List<RaffleTicketModel> notActiveRaffle = new ArrayList<>();
     private List<RaffleTicketModel> allRaffles = new ArrayList<>();
     private List<RaffleTicketModel> raffles = new ArrayList<>();
+    private List<RaffleTicketModel> raffles2 = new ArrayList<>();
+    private List<RaffleTicketModel> usersRaffleTickets = new ArrayList<>();
+    private List<RaffleTicketModel> newUserRaffleTickets = new ArrayList<>();
+
     private RecyclerView recyclerView;
     private MyRafflesAdapter adapter;
 
@@ -130,6 +134,8 @@ public class CompletedRafflesFragment extends Fragment {
                 raffleIds.clear();
                 allRaffles.clear();
                 raffles.clear();
+                raffles2.clear();
+                usersRaffleTickets.clear();
 
                 for(DataSnapshot dataSnapshot2 : dataSnapshot.child("raffles").getChildren()) {
                     RaffleTicketModel raffleTicketModel = dataSnapshot2.getValue(RaffleTicketModel.class);
@@ -137,6 +143,7 @@ public class CompletedRafflesFragment extends Fragment {
                     raffleIds.add(idKey);
                     String raffleName = raffleTicketModel.getRaffleName();
                     map.put(idKey, raffleName);
+                    raffles2.add(raffleTicketModel);
                 }
 
 
@@ -144,6 +151,30 @@ public class CompletedRafflesFragment extends Fragment {
                     RaffleTicketModel raffleTicketModel = dataSnapshot2.getValue(RaffleTicketModel.class);
                     if(raffleTicketModel.isActive()){
                         allRaffles.add(raffleTicketModel);
+                        Log.i(TAG, "onDataChange2: active raffle size is" + allRaffles.size());
+                    }
+                }
+
+                for(DataSnapshot dataSnapshot2 : dataSnapshot.child("user").getChildren()) {
+                    User user = dataSnapshot2.getValue(User.class);
+                    if (user.getUserId().equals(mAuth.getUid())) {
+                        for (int k = 0; k < user.getRaffleTickets().size(); k++) {
+                            usersRaffleTickets.add(user.getRaffleTickets().get(k));
+                        }
+                    }
+                }
+
+                for (int k = 0; k < usersRaffleTickets.size(); k++) {
+                    for(int i = 0; i < raffles2.size(); i++) {
+                        if(raffles2.get(i).getRaffleId().equals(usersRaffleTickets.get(k).getRaffleId())) {
+                            usersRaffleTickets.get(k).setActive(raffles2.get(i).isActive());
+                        }
+                    }
+                }
+
+                for (int k = 0; k < usersRaffleTickets.size(); k++) {
+                    if(!usersRaffleTickets.get(k).isActive()) {
+                        completedRaffles.add(usersRaffleTickets.get(k));
                     }
                 }
 
@@ -156,12 +187,50 @@ public class CompletedRafflesFragment extends Fragment {
                                 if (raffles.get(i).getRaffleId().equals(allRaffles.get(k).getRaffleId())) {
                                     raffles.get(i).setActive(allRaffles.get(k).isActive());
                                     activeRaffles.add(raffles.get(i));
+                                    Log.i(TAG, "onDataChange2: user raffle size is " + raffles.size());
                                 }
                             }
                         }
+                        databaseReference.child("user" + "")
+                                .child(mAuth.getUid())
+                                .child("raffleTickets")
+                                .setValue(usersRaffleTickets);
+
                     }
                     user.setRaffleTickets(raffles);
                 }
+
+
+
+//                for(DataSnapshot dataSnapshot2 : dataSnapshot.child("user").getChildren()) {
+//                    User user = dataSnapshot2.getValue(User.class);
+//                    if(user.getUserId().equals(mAuth.getUid())) {
+//                        for (int k = 0; k < user.getRaffleTickets().size(); k++) {
+//                            usersRaffleTickets.add(user.getRaffleTickets().get(k));
+//                        }
+//                    }
+//                }
+
+//
+//                for(DataSnapshot dataSnapshot2 : dataSnapshot.child("user").getChildren()) {
+//                    User user = dataSnapshot2.getValue(User.class);
+//                    if(user.getUserId().equals(mAuth.getUid())) {
+//                        raffles2.addAll(user.getRaffleTickets());
+//                        for (int k = 0; k < allRaffles.size(); k++) {
+//                            for (int i = 0; i < user.getRaffleTickets().size(); i++) {
+//                                if (raffles2.get(i).getRaffleId().equals(allRaffles.get(k).getRaffleId())) {
+//                                    raffles2.get(i).setActive(allRaffles.get(k).isActive());
+//                                    activeRaffles.add(raffles2.get(i));
+//                                }
+//                            }
+//                        }
+//                    }
+//                    user.setRaffleTickets(raffles2);
+//                }
+
+
+
+
                 Log.i(TAG, "onDataChange:  active raffle Size is " + activeRaffles.size());
                 Log.i(TAG, "onDataChange:  r Size is " + raffles.size());
                 Log.i(TAG, "onDataChange: All raffle Size is " + allRaffles.size());
