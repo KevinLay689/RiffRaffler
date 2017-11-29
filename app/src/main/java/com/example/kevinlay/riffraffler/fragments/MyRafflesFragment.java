@@ -50,6 +50,7 @@ public class MyRafflesFragment extends Fragment {
     private EditText editText, editText2;
     private Dialog dialog, dialog2;
     private String idKey;
+    private String winnerId;
 
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -76,17 +77,12 @@ public class MyRafflesFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         idKey = bundle.getString("key");
-
         Log.i(TAG, "onCreateView: " + idKey);
-
         View view = inflater.inflate(R.layout.fragment_my_raffles_layout, container, false);
-
         dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.create_raffle_layout);
-
         dialog2 = new Dialog(getActivity());
         dialog2.setContentView(R.layout.remove_raffle_layout);
-
         editText = (EditText) dialog.findViewById(R.id.createRaffleName);
         button = (Button) dialog.findViewById(R.id.createRaffleSubmit);
 
@@ -124,8 +120,6 @@ public class MyRafflesFragment extends Fragment {
             }
         });
 
-
-
         floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -133,6 +127,7 @@ public class MyRafflesFragment extends Fragment {
                 return true;
             }
         });
+
         adapter = new MyRafflesAdapter(removed);
         //adapter = new MyRafflesAdapter(myRaffles);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -164,6 +159,7 @@ public class MyRafflesFragment extends Fragment {
                         RaffleTicketModel raffle = snapshot.getValue(RaffleTicketModel.class);
                         if (raffle.getOwner().equals(mAuth.getUid()) && raffle.getRaffleId().equals(raffleEndedId)) {
                             raffle.setActive(false);
+                            raffle.setWinner(winnerId);
                             databaseReference.child("raffles").child(snapshot.getKey()).setValue(raffle);
                         }
                     }
@@ -249,35 +245,27 @@ public class MyRafflesFragment extends Fragment {
         Log.i(TAG, "calling from: removed ");
     }
 
-    private void endRaffle(String s) {
+    private void endRaffle(String s2) {
 
         isUpdatingRecord = true;
 
         for(int i = 0; i < myRaffles.size(); i++) {
-            if(myRaffles.get(i).getRaffleId().equals(s)) {
-                Log.i(TAG, "endRaffle: id changing is" + myRaffles.get(i).getRaffleId());
-                myRaffles.get(i).setActive(false);
-                myRaffles.remove(myRaffles.get(i));
-                databaseReference.child("user")
-                        .child(mAuth.getUid())
-                        .child("raffleTicketsOwned")
-                        .setValue(myRaffles);
-                adapter.notifyDataSetChanged();
-
+            if(myRaffles.get(i).getRaffleId().equals(s2)) {
+                //if(myRaffles.get(i).getOwner().equals(mAuth.getUid())) {
+                    Log.i(TAG, "endRaffle: id changing is" + myRaffles.get(i).getRaffleId());
+                    myRaffles.get(i).setActive(false);
+                    myRaffles.remove(myRaffles.get(i));
+                    databaseReference.child("user")
+                            .child(mAuth.getUid())
+                            .child("raffleTicketsOwned")
+                            .setValue(myRaffles);
+                    adapter.notifyDataSetChanged();
+//                } else {
+//                    Toast.makeText(getActivity(), "You are not the creator of this raffle", Toast.LENGTH_LONG).show();
+//                }
             }
         }
 
-//        removed.clear();
-//        Log.i(TAG, "endRaffle: removed ");
-//
-//        for(int i = 0; i < myRaffles.size(); i++) {
-//            if(myRaffles.get(i).isActive()) {
-//                removed.add(myRaffles.get(i));
-//                Log.i(TAG, "endRaffle: ");
-//            }
-//        }
-//
-//        adapter.notifyDataSetChanged();
 
     }
 
@@ -285,9 +273,13 @@ public class MyRafflesFragment extends Fragment {
 
         List<User> usersInRaffle = new ArrayList<>();
         usersInRaffle.clear();
+
         for (int i = 0; i < users.size(); i++) {
+
             for (int j = 0; j < users.get(i).getRaffleTickets().size(); j++) {
+
                 if(users.get(i).getRaffleTickets().get(j).getRaffleId().equals(s)) {
+
                     usersInRaffle.add(users.get(i));
                 }
             }
@@ -296,25 +288,28 @@ public class MyRafflesFragment extends Fragment {
         if(usersInRaffle.size() > 0) {
 
             Random rand = new Random();
-
             int min = 0;
             int max = usersInRaffle.size();
-
             int winner = rand.nextInt((max - min) + 1) + min - 1;
 
             while(winner >= usersInRaffle.size()) {
+
                 winner--;
             }
 
             if(winner < 0) {
+
                 winner = 0;
                 Log.i(TAG, "selectWinner: winner number " + winner);
             }
 
-
             Toast.makeText(getActivity(),"Winner is " + usersInRaffle.get(winner).getUserId(), Toast.LENGTH_SHORT).show();
+
+            winnerId = usersInRaffle.get(winner).getUserId();
         } else {
+
             Toast.makeText(getActivity(),"No one in raffle ", Toast.LENGTH_LONG).show();
+            winnerId = 0+"";
         }
     }
 
