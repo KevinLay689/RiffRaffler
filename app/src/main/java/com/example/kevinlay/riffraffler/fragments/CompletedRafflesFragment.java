@@ -99,9 +99,6 @@ public class CompletedRafflesFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        itemDecorator.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider));
-
         FloatingActionButton b = ((FloatingActionButton) view.findViewById(R.id.button12));
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +113,6 @@ public class CompletedRafflesFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView2.setItemAnimator(new DefaultItemAnimator());
         recyclerView2.setAdapter(adapter2);
-        recyclerView2.addItemDecoration(itemDecorator);
-
 
         return view;
     }

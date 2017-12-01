@@ -28,7 +28,6 @@
             android:layout_gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kevin's Raffle"
             android:textSize="20sp" />
 
         <TextView
@@ -37,7 +36,6 @@
             android:layout_weight="1"
             android:layout_gravity="start"
             android:layout_height="wrap_content"
-            android:text="Raffle #: 26762"
             android:textSize="12sp" />
 
     </LinearLayout>
