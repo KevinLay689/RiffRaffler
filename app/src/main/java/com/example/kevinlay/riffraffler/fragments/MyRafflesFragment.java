@@ -50,7 +50,8 @@ public class MyRafflesFragment extends Fragment {
     private MyRafflesAdapter adapter;
     private FloatingActionButton floatingActionButton;
     private Button button, button2;
-    private EditText editText, editText2;
+    private EditText createRaffle, endRaffle;
+    private EditText  raffleElig, rafflePrize;
     private Dialog dialog, dialog2;
     private String winnerId;
     private boolean isUpdatingRecord = false;
@@ -82,14 +83,16 @@ public class MyRafflesFragment extends Fragment {
         dialog.setContentView(R.layout.create_raffle_layout);
         dialog2 = new Dialog(getActivity());
         dialog2.setContentView(R.layout.remove_raffle_layout);
-        editText = (EditText) dialog.findViewById(R.id.createRaffleName);
+        createRaffle = (EditText) dialog.findViewById(R.id.createRaffleName);
         button = (Button) dialog.findViewById(R.id.createRaffleSubmit);
+        raffleElig = (EditText) dialog.findViewById(R.id.createRaffleElig);
+        rafflePrize = (EditText) dialog.findViewById(R.id.createRafflePrize);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertDataToDatbase(editText.getText().toString());
-                editText.getText().clear();
+                insertDataToDatbase(createRaffle.getText().toString(), raffleElig.getText().toString(), rafflePrize.getText().toString());
+                createRaffle.getText().clear();
                 dialog.dismiss();
             }
         });
@@ -103,15 +106,15 @@ public class MyRafflesFragment extends Fragment {
             }
         });
 
-        editText2 = (EditText) dialog2.findViewById(R.id.editText3);
+        endRaffle = (EditText) dialog2.findViewById(R.id.editText3);
         button2 = (Button) dialog2.findViewById(R.id.button3);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                raffleEndedId = editText2.getText().toString();
-                endRaffle(editText2.getText().toString());
-                editText2.getText().clear();
+                raffleEndedId = endRaffle.getText().toString();
+                endRaffle(endRaffle.getText().toString());
+                endRaffle.getText().clear();
                 selectWinner(raffleEndedId);
                 dialog2.dismiss();
             }
@@ -229,11 +232,11 @@ public class MyRafflesFragment extends Fragment {
         });
     }
 
-    private void insertDataToDatbase(String s) {
+    private void insertDataToDatbase(String name, String elig, String prize) {
         isUpdatingRecord = false;
         String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999));
         List<String> emptyList = new ArrayList<>();
-        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, s);
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, name, elig, prize);
         databaseReference.child(RAFFLE_DATABASE_KEY).push().setValue(raffleTicketModel);
     }
 

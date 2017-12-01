@@ -14,15 +14,41 @@
         android:ems="10"
         android:inputType="textCapWords"/>
 
-    <Button
-        android:id="@+id/createRaffleSubmit"
+    <EditText
+        android:id="@+id/createRaffleElig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="Enter Elgibility Rules"
         android:layout_alignEnd="@+id/createRaffleName"
         android:layout_alignLeft="@+id/createRaffleName"
         android:layout_alignRight="@+id/createRaffleName"
         android:layout_alignStart="@+id/createRaffleName"
         android:layout_below="@+id/createRaffleName"
+        android:ems="10"
+        android:inputType="textCapWords"/>
+
+    <EditText
+        android:id="@+id/createRafflePrize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter Description of Prize"
+        android:layout_alignEnd="@+id/createRaffleElig"
+        android:layout_alignLeft="@+id/createRaffleElig"
+        android:layout_alignRight="@+id/createRaffleElig"
+        android:layout_alignStart="@+id/createRaffleElig"
+        android:layout_below="@+id/createRaffleElig"
+        android:ems="10"
+        android:inputType="textCapWords"/>
+
+    <Button
+        android:id="@+id/createRaffleSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/createRafflePrize"
+        android:layout_alignLeft="@+id/createRafflePrize"
+        android:layout_alignRight="@+id/createRafflePrize"
+        android:layout_alignStart="@+id/createRafflePrize"
+        android:layout_below="@+id/createRafflePrize"
         android:layout_marginTop="13dp"
         android:text="Create Raffle" />
 
