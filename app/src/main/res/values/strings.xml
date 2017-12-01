@@ -77,4 +77,20 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+
+    <string name="raffle_added_toast">Added Raffle: </string>
+    <string name="raffle_invalid_toast">Invalid Raffle: </string>
+
+    <string name="create_raffle_dialog">Create Raffle</string>
+
+    <string name="select_winner_toast">Winner is: </string>
+    <string name="empty_winner_toast">No one in raffle </string>
+
+    <string name="winner_tag">WINNER: </string>
+
+    <string name="fragment_name_my_raffles">My Raffles </string>
+    <string name="fragment_name_raffles">Raffles: </string>
+    <string name="fragment_name_my_messages">Messages: </string>
+
+    <string name="activity_title_user_id">"UserID: </string>
 </resources>
