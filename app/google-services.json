@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "437345352577",
+    "firebase_url": "https://riffraffler-5af31.firebaseio.com",
+    "project_id": "riffraffler-5af31",
+    "storage_bucket": "riffraffler-5af31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437345352577:android:efabb5f58c00a473",
+        "android_client_info": {
+          "package_name": "com.example.kevinlay.riffraffler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437345352577-nhlggdqllrgmfnjuscq4e6v30p9gulel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kevinlay.riffraffler",
+            "certificate_hash": "4959a2b56bd91e15d72d2bc471bad5f44e883fc1"
+          }
+        },
+        {
+          "client_id": "437345352577-43h1s23rhvccc1ab0u9u9sas1db3dh15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUGRgfGNFcCh3Pg-zUV5iA_BA_E_DsRY0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437345352577-43h1s23rhvccc1ab0u9u9sas1db3dh15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

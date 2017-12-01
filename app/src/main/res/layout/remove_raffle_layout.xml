@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:hint="Raffle Id"
+        android:hint="@string/raffle_hint_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp"
         android:ems="10"
@@ -25,6 +25,6 @@
         android:layout_alignStart="@+id/editText3"
         android:layout_below="@+id/editText3"
         android:layout_marginTop="13dp"
-        android:text="Remove Raffle" />
+        android:text="@string/end_raffle_button" />
 
 </RelativeLayout>

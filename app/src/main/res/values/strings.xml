@@ -93,4 +93,8 @@
     <string name="fragment_name_my_messages">Messages: </string>
 
     <string name="activity_title_user_id">"UserID: </string>
+
+    <string name="raffle_hint_text">Raffle Id </string>
+    <string name="end_raffle_button">End Raffle </string>
+    <string name="create_raffle_button">Create Raffle </string>
 </resources>

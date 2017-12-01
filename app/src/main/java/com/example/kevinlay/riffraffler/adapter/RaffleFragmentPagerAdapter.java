@@ -13,6 +13,7 @@ import java.util.List;
  */
 
 public class RaffleFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+
     private final int PAGE_COUNT = 3;
     private String tabTitles[] = new String[] { "My Raffles", "Raffles", "Messages" };
     private final List<Fragment> fragments = new ArrayList<>();
@@ -39,7 +40,6 @@ public class RaffleFragmentPagerAdapter extends android.support.v4.app.FragmentP
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         return tabTitles[position];
     }
 }

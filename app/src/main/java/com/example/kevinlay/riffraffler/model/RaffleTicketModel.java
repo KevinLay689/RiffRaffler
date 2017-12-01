@@ -8,12 +8,12 @@ import java.util.List;
 
 public class RaffleTicketModel {
 
-    String raffleId;
-    boolean isActive;
-    String winner;
-    String owner;
-    List<String> usersRegistered;
-    String raffleName;
+    private String raffleId;
+    private boolean isActive;
+    private String winner;
+    private String owner;
+    private List<String> usersRegistered;
+    private String raffleName;
 
     public RaffleTicketModel() {
 
@@ -74,6 +74,10 @@ public class RaffleTicketModel {
 
     public String getRaffleName() {
         return raffleName;
+    }
+
+    public void setRaffleName(String raffleName) {
+        this.raffleName = raffleName;
     }
 
 }
