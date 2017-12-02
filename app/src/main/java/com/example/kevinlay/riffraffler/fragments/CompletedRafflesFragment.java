@@ -222,7 +222,7 @@ public class CompletedRafflesFragment extends Fragment {
         if(raffleIds.contains(id)) {
 
             String name = map.get(id);
-            rafflesAddedToDatabase.add(new RaffleTicketModel(id, "", new ArrayList<String>(), name, "", ""));
+            rafflesAddedToDatabase.add(new RaffleTicketModel(id, "", new ArrayList<String>(), name, "", "",""));
             databaseReference.child(USER_DATABASE_KEY + "")
                     .child(mAuth.getUid())
                     .child(RAFFLE_TICKET_DATABASE_KEY)

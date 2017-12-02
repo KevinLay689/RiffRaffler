@@ -16,12 +16,13 @@ public class RaffleTicketModel {
     private String raffleName;
     private String rafflePrize;
     private String raffleElig;
+    private String photo;
 
     public RaffleTicketModel() {
 
     }
 
-    public RaffleTicketModel(String raffleId, String owner, List<String> usersRegistered, String raffleName, String raffleElig, String rafflePrize) {
+    public RaffleTicketModel(String raffleId, String owner, List<String> usersRegistered, String raffleName, String raffleElig, String rafflePrize, String photo) {
         this.raffleId = raffleId;
         this.isActive = true;
         this.winner = "";
@@ -30,6 +31,7 @@ public class RaffleTicketModel {
         this.usersRegistered = usersRegistered;
         this.raffleElig = raffleElig;
         this.rafflePrize = rafflePrize;
+        this.photo = photo;
     }
 
     public String getRaffleId() {
@@ -98,5 +100,13 @@ public class RaffleTicketModel {
 
     public void setRaffleElig(String raffleElig) {
         this.raffleElig = raffleElig;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

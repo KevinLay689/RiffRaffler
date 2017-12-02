@@ -1,6 +1,7 @@
 package com.example.kevinlay.riffraffler;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 
@@ -31,4 +32,8 @@ public class BaseActivity extends AppCompatActivity {
         hideProgressDialog();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

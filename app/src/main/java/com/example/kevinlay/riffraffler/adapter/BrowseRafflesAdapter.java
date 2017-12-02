@@ -1,9 +1,13 @@
 package com.example.kevinlay.riffraffler.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevinlay.riffraffler.R;
@@ -34,13 +38,22 @@ public class BrowseRafflesAdapter extends RecyclerView.Adapter<BrowseRafflesAdap
     @Override
     public void onBindViewHolder(BrowseRafflesAdapter.MessagesViewHolder holder, int position) {
 
-        TextView raffleOwnerTextView = holder.raffleOwnerTextView;
+        TextView raffleEligTextView = holder.raffleEligTextView;
         TextView raffleNameTextView = holder.raffleNameTextView;
         TextView raffleIdTextView = holder.raffleIdTextView;
+        TextView rafflePrizeTextView = holder.rafflePrizeTextView;
+        ImageView raffleImage = holder.raffleImage;
 
         raffleNameTextView.setText(messages.get(position).getRaffleName());
-        raffleOwnerTextView.setText("Raffle Owner ID: " + messages.get(position).getOwner());
+        raffleEligTextView.setText("Raffle Eligibility: " + messages.get(position).getRaffleElig());
         raffleIdTextView.setText("Raffle ID: " + messages.get(position).getRaffleId());
+        rafflePrizeTextView.setText("Raffle Prize: " + messages.get(position).getRafflePrize());
+
+        byte[] decodedString = Base64.decode(messages.get(position).getPhoto(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Bitmap.createScaledBitmap(decodedByte, 100, 100, false);
+        raffleImage.setImageBitmap(decodedByte);
+        decodedByte = null;
     }
 
     @Override
@@ -52,13 +65,17 @@ public class BrowseRafflesAdapter extends RecyclerView.Adapter<BrowseRafflesAdap
 
         TextView raffleNameTextView;
         TextView raffleIdTextView;
-        TextView raffleOwnerTextView;
+        TextView raffleEligTextView;
+        TextView rafflePrizeTextView;
+        ImageView raffleImage;
 
         public MessagesViewHolder(View itemView) {
             super(itemView);
             this.raffleNameTextView = (TextView) itemView.findViewById(R.id.raffleNameTextView);
             this.raffleIdTextView = (TextView) itemView.findViewById(R.id.raffleIdTextView);
-            this.raffleOwnerTextView = (TextView) itemView.findViewById(R.id.raffleOwnerTextView);
+            this.raffleEligTextView = (TextView) itemView.findViewById(R.id.raffleEligTextView);
+            this.raffleImage = (ImageView) itemView.findViewById(R.id.browseImage);
+            this.rafflePrizeTextView = (TextView) itemView.findViewById(R.id.rafflePrizeTextView);
         }
     }
 }

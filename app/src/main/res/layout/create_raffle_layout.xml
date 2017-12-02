@@ -41,7 +41,7 @@
         android:inputType="textCapWords"/>
 
     <Button
-        android:id="@+id/createRaffleSubmit"
+        android:id="@+id/addImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/createRafflePrize"
@@ -49,6 +49,18 @@
         android:layout_alignRight="@+id/createRafflePrize"
         android:layout_alignStart="@+id/createRafflePrize"
         android:layout_below="@+id/createRafflePrize"
+        android:layout_marginTop="13dp"
+        android:text="Add Image" />
+
+    <Button
+        android:id="@+id/createRaffleSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/addImageButton"
+        android:layout_alignLeft="@+id/addImageButton"
+        android:layout_alignRight="@+id/addImageButton"
+        android:layout_alignStart="@+id/addImageButton"
+        android:layout_below="@+id/addImageButton"
         android:layout_marginTop="13dp"
         android:text="Create Raffle" />
 

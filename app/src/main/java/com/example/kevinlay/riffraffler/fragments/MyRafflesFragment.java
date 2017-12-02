@@ -1,12 +1,16 @@
 package com.example.kevinlay.riffraffler.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.kevinlay.riffraffler.adapter.MyRafflesAdapter;
@@ -26,10 +31,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nguyenhoanglam.imagepicker.model.Config;
+import com.nguyenhoanglam.imagepicker.model.Image;
+import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by kevinlay on 11/8/17.
@@ -53,13 +64,18 @@ public class MyRafflesFragment extends Fragment {
     private EditText createRaffle, endRaffle;
     private EditText  raffleElig, rafflePrize;
     private Dialog dialog, dialog2;
+    private Button addImageButton;
     private String winnerId;
     private boolean isUpdatingRecord = false;
+
+    private ArrayList<Image> images = new ArrayList<>();
 
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
 
     private String raffleEndedId;
+
+    private String encodedPicture;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +103,7 @@ public class MyRafflesFragment extends Fragment {
         button = (Button) dialog.findViewById(R.id.createRaffleSubmit);
         raffleElig = (EditText) dialog.findViewById(R.id.createRaffleElig);
         rafflePrize = (EditText) dialog.findViewById(R.id.createRafflePrize);
+        addImageButton = (Button) dialog.findViewById(R.id.addImageButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +111,32 @@ public class MyRafflesFragment extends Fragment {
                 insertDataToDatbase(createRaffle.getText().toString(), raffleElig.getText().toString(), rafflePrize.getText().toString());
                 createRaffle.getText().clear();
                 dialog.dismiss();
+            }
+        });
+
+        addImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ImagePicker.with(getActivity())                         //  Initialize ImagePicker with activity or fragment context
+                        .setToolbarColor("#212121")         //  Toolbar color
+                        .setStatusBarColor("#000000")       //  StatusBar color (works with SDK >= 21  )
+                        .setToolbarTextColor("#FFFFFF")     //  Toolbar text color (Title and Done button)
+                        .setToolbarIconColor("#FFFFFF")     //  Toolbar icon color (Back and Camera button)
+                        .setProgressBarColor("#4CAF50")     //  ProgressBar color
+                        .setBackgroundColor("#212121")      //  Background color
+                        .setCameraOnly(false)               //  Camera mode
+                        .setMultipleMode(true)              //  Select multiple images or single image
+                        .setFolderMode(true)                //  Folder mode
+                        .setShowCamera(true)                //  Show camera button
+                        .setFolderTitle("Albums")           //  Folder title (works with FolderMode = true)
+                        .setImageTitle("Galleries")         //  Image title (works with FolderMode = false)
+                        .setDoneTitle("Done")               //  Done button title
+                        .setLimitMessage("You have reached selection limit")    // Selection limit message
+                        .setMaxSize(1)                     //  Max images can be selected
+                        .setSavePath("ImagePicker")         //  Image capture folder name
+                        .setSelectedImages(images)          //  Selected images
+                        .setKeepScreenOn(true)              //  Keep screen on when selecting images
+                        .start();                           //  Start ImagePicker
             }
         });
 
@@ -236,7 +279,7 @@ public class MyRafflesFragment extends Fragment {
         isUpdatingRecord = false;
         String randomNum = (int) (Math.random() * 999) + "" +((int) (Math.random() * 999) % (int) (Math.random() * 999));
         List<String> emptyList = new ArrayList<>();
-        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, name, elig, prize);
+        RaffleTicketModel raffleTicketModel = new RaffleTicketModel(randomNum, mAuth.getUid(), emptyList, name, elig, prize, encodedPicture);
         databaseReference.child(RAFFLE_DATABASE_KEY).push().setValue(raffleTicketModel);
     }
 
@@ -300,5 +343,20 @@ public class MyRafflesFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == Config.RC_PICK_IMAGES && resultCode == RESULT_OK && data != null) {
+            ArrayList<Image> images2 = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
+            Log.i(TAG, "onActivityResult: image length" + images2.size());
+
+            Bitmap bm = BitmapFactory.decodeFile(images2.get(0).getPath());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+
+            encodedPicture = Base64.encodeToString(b, Base64.DEFAULT);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

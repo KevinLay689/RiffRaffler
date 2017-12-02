@@ -2,10 +2,12 @@ package com.example.kevinlay.riffraffler;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +17,10 @@ import com.example.kevinlay.riffraffler.fragments.MyRafflesFragment;
 import com.example.kevinlay.riffraffler.fragments.BrowerRafflesPageFragment;
 import com.example.kevinlay.riffraffler.adapter.RaffleFragmentPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nguyenhoanglam.imagepicker.model.Config;
+import com.nguyenhoanglam.imagepicker.model.Image;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.ic_ticket_confirmation,
             R.drawable.ic_message_text
     };
+    private MyRafflesFragment myRafflesFragment;
 
     private FirebaseAuth mAuth;
 
@@ -39,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         RaffleFragmentPagerAdapter adapter = new RaffleFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this);
-        MyRafflesFragment myRafflesFragment = new MyRafflesFragment();
+        myRafflesFragment = new MyRafflesFragment();
         CompletedRafflesFragment completedRafflesFragment = new CompletedRafflesFragment();
         BrowerRafflesPageFragment browerRafflesPageFragment = new BrowerRafflesPageFragment();
 
@@ -77,5 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        myRafflesFragment.onActivityResult(requestCode, resultCode, data);
     }
 }
