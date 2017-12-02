@@ -79,7 +79,7 @@ public class CompletedRafflesFragment extends Fragment {
 
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.add_raffle_layout);
-        dialog.setTitle(R.string.create_raffle_dialog);
+        dialog.setTitle(R.string.join_raffle_button);
 
         final EditText editText = dialog.findViewById(R.id.editText2);
         Button button = dialog.findViewById(R.id.button2);

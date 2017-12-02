@@ -25,7 +25,7 @@
         android:layout_alignStart="@+id/createRaffleName"
         android:layout_below="@+id/createRaffleName"
         android:ems="10"
-        android:inputType="textCapWords"/>
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/createRafflePrize"
@@ -38,7 +38,7 @@
         android:layout_alignStart="@+id/createRaffleElig"
         android:layout_below="@+id/createRaffleElig"
         android:ems="10"
-        android:inputType="textCapWords"/>
+        android:inputType="text"/>
 
     <Button
         android:id="@+id/addImageButton"

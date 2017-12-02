@@ -348,7 +348,7 @@ public class MyRafflesFragment extends Fragment {
 
         if (requestCode == Config.RC_PICK_IMAGES && resultCode == RESULT_OK && data != null) {
             ArrayList<Image> images2 = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
-            Log.i(TAG, "onActivityResult: image length" + images2.size());
+            addImageButton.setText("Image Added: " + images2.get(0).getName());
 
             Bitmap bm = BitmapFactory.decodeFile(images2.get(0).getPath());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

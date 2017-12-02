@@ -25,6 +25,6 @@
         android:layout_alignStart="@+id/editText2"
         android:layout_below="@+id/editText2"
         android:layout_marginTop="13dp"
-        android:text="@string/create_raffle_button" />
+        android:text="@string/join_raffle_button" />
 
 </RelativeLayout>
