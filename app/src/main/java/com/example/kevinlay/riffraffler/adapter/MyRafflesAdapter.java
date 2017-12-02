@@ -37,7 +37,13 @@ public class MyRafflesAdapter extends RecyclerView.Adapter<MyRafflesAdapter.Raff
     public void onBindViewHolder(RaffleViewHolder holder, final int position) {
         holder.textView.setText("Raffle #: " + raffles.get(position).getRaffleId());
         holder.raffleText.setText(raffles.get(position).getRaffleName());
+
         //holder.imageView.setImageResource(raffles.get(position).getImage());
+
+//        byte[] decodedString = Base64.decode(raffles.get(position).getPhoto(), Base64.DEFAULT);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        holder.imageView.setImageBitmap(decodedByte);
+//        decodedByte = null;
     }
 
     @Override

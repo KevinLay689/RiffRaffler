@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_USE_LOGO);
-        getSupportActionBar().setIcon(R.drawable.ic_menu2);
+        //getSupportActionBar().setIcon(R.drawable.ic_menu2);
         return true;
     }
 
