@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvRaffleConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:hint="@string/raffle_hint_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:textSize="20sp"
+        android:text="@string/confirm_text_prompt"/>
+
+    <Button
+        android:id="@+id/bYesConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_alignEnd="@+id/tvRaffleConfirm"
+        android:layout_alignLeft="@+id/tvRaffleConfirm"
+        android:layout_alignRight="@+id/tvRaffleConfirm"
+        android:layout_alignStart="@+id/tvRaffleConfirm"
+        android:layout_below="@+id/tvRaffleConfirm"
+        android:text="@string/yes_button_text"/>
+
+
+    <Button
+        android:id="@+id/bNoConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/bYesConfirm"
+        android:layout_alignLeft="@+id/bYesConfirm"
+        android:layout_alignRight="@+id/bYesConfirm"
+        android:layout_alignStart="@+id/bYesConfirm"
+        android:layout_below="@+id/bYesConfirm"
+        android:layout_marginTop="13dp"
+        android:text="@string/no_button_text" />
+
+</RelativeLayout>

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kevinlay.riffraffler.R;
+import com.example.kevinlay.riffraffler.callbacks.BrowseCallback;
 import com.example.kevinlay.riffraffler.model.RaffleTicketModel;
 
 import java.util.List;
@@ -20,10 +22,16 @@ import java.util.List;
  */
 
 public class BrowseRafflesAdapter extends RecyclerView.Adapter<BrowseRafflesAdapter.MessagesViewHolder> {
+
+    private static final String TAG = "BrowseRafflesAdapter";
+
     private List<RaffleTicketModel> messages;
 
-    public BrowseRafflesAdapter(List<RaffleTicketModel> messageModel) {
+    private BrowseCallback browseCallback;
+
+    public BrowseRafflesAdapter(List<RaffleTicketModel> messageModel, BrowseCallback browseCallback) {
         messages = messageModel;
+        this.browseCallback = browseCallback;
     }
 
     @Override
@@ -36,7 +44,7 @@ public class BrowseRafflesAdapter extends RecyclerView.Adapter<BrowseRafflesAdap
     }
 
     @Override
-    public void onBindViewHolder(BrowseRafflesAdapter.MessagesViewHolder holder, int position) {
+    public void onBindViewHolder(BrowseRafflesAdapter.MessagesViewHolder holder, final int position) {
 
         TextView raffleEligTextView = holder.raffleEligTextView;
         TextView raffleNameTextView = holder.raffleNameTextView;
@@ -54,6 +62,16 @@ public class BrowseRafflesAdapter extends RecyclerView.Adapter<BrowseRafflesAdap
         Bitmap.createScaledBitmap(decodedByte, 100, 100, false);
         raffleImage.setImageBitmap(decodedByte);
         decodedByte = null;
+
+        raffleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                browseCallback.browseAdapterCallback(messages.get(position).getRaffleId(), messages.get(position).getRaffleName());
+                Log.i(TAG, "onClick: raffle id " + messages.get(position).getRaffleId());
+                Log.i(TAG, "onClick: raffle name " + messages.get(position).getRaffleName());
+            }
+        });
+
     }
 
     @Override

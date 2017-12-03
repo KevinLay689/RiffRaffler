@@ -101,4 +101,9 @@
 
     <string name="active_raffles_text">Active Raffles</string>
     <string name="completed_raffles_text">Completed Raffles</string>
+
+    <string name="yes_button_text">Yes</string>
+    <string name="no_button_text">No</string>
+    <string name="confirm_text_prompt">Do you want to add this raffle?</string>
+
 </resources>
